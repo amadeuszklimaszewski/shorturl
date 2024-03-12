@@ -29,7 +29,7 @@ class UrlRepository(IUrlRepository):
         for url_in_db in self._db.urls.values():
             if url_in_db.original_url == url:
                 return url_in_db
-        
+
         return None
 
     async def persist(self, model: ShortenedUrl) -> None:
