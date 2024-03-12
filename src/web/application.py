@@ -7,7 +7,7 @@ def get_app() -> FastAPI:
     app = FastAPI(
         title="shorturl",
         version="1.0.0",
-        docs_url="/api/docs",
+        docs_url="/docs",
     )
     app.include_router(router=api_router, prefix="")
     return app

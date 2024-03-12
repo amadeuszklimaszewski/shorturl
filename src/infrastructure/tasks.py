@@ -1,9 +1,11 @@
+import asyncio
+from uuid import UUID
+
+from src.core.models import ShortenedUrl
 from src.infrastructure.celery import app
 from src.infrastructure.database.connection import engine
-from asgiref.sync import async_to_sync
 from src.infrastructure.repositories.url import UrlRepository
-from uuid import UUID
-from src.core.models import ShortenedUrl
+
 
 @app.task(
     ignore_result=True,
@@ -17,5 +19,5 @@ def process_url(short_url: UUID, original_url: str):
         async with engine.begin() as conn:
             repository = UrlRepository(conn)
             await repository.persist(model)
-    
-    async_to_sync(_persist)(shortened_url)
+
+    asyncio.run(_persist(shortened_url))
