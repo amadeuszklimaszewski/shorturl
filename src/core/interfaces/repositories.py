@@ -19,5 +19,5 @@ class BaseRepository[PK, Model: BaseModel](ABC):
 
 class UrlRepository(BaseRepository[UUID, ShortenedUrl], ABC):
     @abstractmethod
-    async def get_by_original_url(self, pk: UUID) -> ShortenedUrl | None:
+    async def get_by_original_url(self, url: str) -> ShortenedUrl | None:
         ...

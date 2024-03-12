@@ -25,6 +25,13 @@ class UrlRepository(IUrlRepository):
                 f"{self.__class__.__name__} could not find {ShortenedUrl.__name__} with given PK - {pk}",
             )
 
+    async def get_by_original_url(self, url: str) -> ShortenedUrl | None:
+        for url_in_db in self._db.urls.values():
+            if url_in_db.original_url == url:
+                return url_in_db
+        
+        return None
+
     async def persist(self, model: ShortenedUrl) -> None:
         if model.short_url in self._db.urls:
             raise AlreadyExistsError(

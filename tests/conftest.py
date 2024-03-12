@@ -57,14 +57,14 @@ def in_memory_db() -> InMemoryDB:
 
 @pytest.fixture
 def url_repository(in_memory_db: InMemoryDB):
-    repository = UrlRepository
+    repository = UrlRepository()
     repository.set_db(in_memory_db)
     return repository
 
 
 @pytest.fixture
 def url_processor(in_memory_db: InMemoryDB):
-    processor = UrlProcessor
+    processor = UrlProcessor()
     processor.set_db(in_memory_db)
     return processor
 
