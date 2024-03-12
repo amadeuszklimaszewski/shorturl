@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "shorturl"
+version = "0.1.0"
+description = "Python webapi for shortening urls"
+authors = ["Amadeusz Klimaszewski <amadeusz.klimaszewski@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^2.6.3"
+fastapi = "^0.110.0"
+SQLAlchemy = "^2.0.28"
+pydantic-settings = "^2.2.1"
+asyncpg = "^0.29.0"
+alembic = "^1.13.1"
+uvicorn = "^0.28.0"
+celery = "^5.3.6"
+redis = "^5.0.3"
+
+[tool.poetry.dev-dependencies]
+pytest-asyncio = "^0.20.3"
+coverage = "^7.3.2"
+pytest = "^7.4.2"
+flake8 = "~4.0.1"
+mypy = "^0.981"
+isort = "^5.12.0"
+yesqa = "^1.5.0"
+pre-commit = "^2.21.0"
+wemake-python-styleguide = "^0.17.0"
+black = "^22.12.0"
+autoflake = "^1.7.8"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

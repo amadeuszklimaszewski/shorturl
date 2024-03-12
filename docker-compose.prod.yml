@@ -1,0 +1,80 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/python/Dockerfile
+    container_name: backend
+    restart: always
+    env_file: ./.env
+    command: uvicorn main:app --host 0.0.0.0 --port 80 --workers 2
+    ports:
+    - 80:80
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+    - backend_network
+
+  db:
+    image: postgres:15.3-bullseye
+    container_name: db
+    restart: always
+    env_file: ./.env
+    volumes:
+    - postgres_data:/var/lib/postgresql/data
+    networks:
+    - backend_network
+    healthcheck:
+      test: "pg_isready --username=postgres && psql --username=postgres --list"
+      timeout: 10s
+      retries: 20
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    volumes:
+    - redis_data:/data
+    networks:
+    - backend_network
+
+  celery:
+    build:
+      context: .
+      dockerfile: ./docker/python/Dockerfile
+    container_name: celery
+    restart: always
+    command: celery -A src.infrastructure.celery worker --loglevel=info
+    env_file: ./.env
+    depends_on:
+    - redis
+    - db
+    volumes:
+    - .:/app
+    working_dir: /app
+    networks:
+    - backend_network
+
+  flower:
+    image: mher/flower:latest
+    container_name: flower
+    restart: always
+    command: celery flower --port=5555 --persistent=true --db=/flower/flower.db --basic_auth=admin:admin
+    user: root
+    environment:
+    - CELERY_BROKER_URL=redis://redis:6379/0
+    - CELERY_TASK_SERIALIZER='pickle'
+    - CELERY_ACCEPT_CONTENT=['application/x-python-serialize', 'application/json']
+    depends_on:
+    - celery
+    networks:
+    - backend_network
+
+networks:
+  backend_network:
+
+volumes:
+  postgres_data:
+  redis_data:
