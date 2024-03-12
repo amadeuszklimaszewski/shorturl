@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException, status
+from uuid import UUID
+
+from fastapi import APIRouter, status
 from fastapi.responses import RedirectResponse
-from pydantic import BaseModel
 
 from src.web.api.v1.annotations import UrlService
 from src.web.api.v1.schemas.url import ShortenedUrlOutputSchema, ShortenUrlInputSchema
@@ -23,10 +24,10 @@ async def shorten(
 
 @url_router.get(
     "/{short_url}/",
-    status_code=status.HTTP_302_FOUND,
+    status_code=status.HTTP_307_TEMPORARY_REDIRECT,
 )
 async def redirect_to_original_url(
-    short_url: str,
+    short_url: UUID,
     service: UrlService,
 ):
     original_url = await service.get_original_url(short_url)

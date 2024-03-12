@@ -93,7 +93,5 @@ async def client(
     anyio_backend: Any,
 ) -> AsyncGenerator[AsyncClient, None]:
     transport = ASGITransport(app=fastapi_app)
-    async with AsyncClient(
-        transport=transport, base_url="http://test/api/v1"
-    ) as client:
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
         yield client
