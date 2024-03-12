@@ -25,7 +25,11 @@ class UrlRepository(IUrlRepository):
     async def get_by_original_url(self, url: str) -> ShortenedUrl | None:
         stmt = select(self._table).where(self._table.c.original_url == url).limit(1)
         result = (await self._conn.execute(stmt)).first()
-        return ShortenedUrl(short_url=result[0], original_url=result[1]) if result else None
+        return (
+            ShortenedUrl(short_url=result[0], original_url=result[1])
+            if result
+            else None
+        )
 
     async def persist(self, model: ShortenedUrl) -> None:
         stmt = insert(self._table).values(**model.model_dump())
