@@ -9,5 +9,5 @@ def get_app() -> FastAPI:
         version="1.0.0",
         docs_url="/api/docs",
     )
-    app.include_router(router=api_router, prefix="/api")
+    app.include_router(router=api_router, prefix="")
     return app
