@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Any
-
+from uuid import UUID
 
 class UrlProcessor(ABC):
     @abstractmethod
-    async def process(self, url_data: dict[str, Any]):
+    def process(self, short_url: UUID, original_url: str) -> None:
         ...

@@ -9,15 +9,15 @@ from src.core.models import ShortenedUrl
 
 class BaseRepository[PK, Model: BaseModel](ABC):
     @abstractmethod
-    def get(self, pk: PK) -> Model:
+    async def get(self, pk: PK) -> Model:
         ...
 
     @abstractmethod
-    def persist(self, model: Model) -> None:
+    async def persist(self, model: Model) -> None:
         ...
 
 
 class UrlRepository(BaseRepository[UUID, ShortenedUrl], ABC):
     @abstractmethod
-    def get_by_original_url(self, pk: UUID) -> ShortenedUrl | None:
+    async def get_by_original_url(self, pk: UUID) -> ShortenedUrl | None:
         ...
