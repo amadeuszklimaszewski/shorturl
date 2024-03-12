@@ -16,15 +16,8 @@ class BaseRepository[PK, Model: BaseModel](ABC):
     def persist(self, model: Model) -> None:
         ...
 
-    @abstractmethod
-    def delete(self, pk: PK) -> None:
-        ...
-
-    @property
-    @abstractmethod
-    def _model(self) -> Type[Model]:
-        ...
-
 
 class UrlRepository(BaseRepository[UUID, ShortenedUrl], ABC):
-    ...
+    @abstractmethod
+    def get_by_original_url(self, pk: UUID) -> ShortenedUrl | None:
+        ...

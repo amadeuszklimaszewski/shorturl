@@ -18,9 +18,14 @@ class UrlRepository(BaseRepository[UUID, ShortenedUrl]):
         result = self._conn.execute(stmt).first()
         if not result:
             raise DoesNotExistError(
-                f"{self.__class__.__name__} could not find {self._model.__name__} with given PK - {pk}",
+                f"{self.__class__.__name__} could not find {ShortenedUrl.__name__} with given PK - {pk}",
             )
         return ShortenedUrl.model_validate(result)
+
+    def get_by_original_url(self, url: str) -> ShortenedUrl | None:
+        stmt = select(self._table).where(self._table.c.original_url == url).limit(1)
+        result = self._conn.execute(stmt).first()
+        return ShortenedUrl.model_validate(result) if result else None
 
     def persist(self, model: ShortenedUrl) -> None:
         stmt = insert(self._table).values(**model.model_dump())
