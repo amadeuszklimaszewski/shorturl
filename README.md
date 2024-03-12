@@ -15,9 +15,10 @@ SwaggerUI docs available at `localhost:8000/docs`
 ## Setup
 1. Clone repository:
 `$ git clone https://github.com/amadeuszklimaszewski/shorturl.git`
-2. Run in root directory:
+2. Create .env file from .env.example
+3. Run in root directory:
 `$ make build-dev`
-3. Run template: `$ make up-dev`
+4. Run template: `$ make up-dev`
 
 
 ## Migrations
